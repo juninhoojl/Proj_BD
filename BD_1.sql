@@ -135,19 +135,84 @@ CREATE TABLE Feito(
 INSERT INTO Pais (ID, Nome, Sigla, Continente)
 	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
 
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'Argentina', 'AR', 'Americas');
 
 INSERT INTO Pais (ID, Nome, Sigla, Continente)
-	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
-
-
-INSERT INTO Pais (ID, Nome, Sigla, Continente)
-	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
-
+	VALUES (DEFAULT, 'Estados Unidos', 'US', 'Americas');
 
 INSERT INTO Pais (ID, Nome, Sigla, Continente)
-	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
+	VALUES (DEFAULT, 'Alemanha', 'DL', 'Europa');
+
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'China', 'CH', 'Asia');
+
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'Japao', 'JP', 'Asia');
 
 
+-- Vacina
+
+INSERT INTO Vacina (ID, Nome, Fase, Principio)
+	VALUES (DEFAULT, Sinovac, 3, Inativada);
+
+INSERT INTO Vacina (ID, Nome, Fase, Principio)
+	VALUES (DEFAULT, Coronavac, 3, Inativada);
+
+INSERT INTO Vacina (ID, Nome, Fase, Principio)
+	VALUES (DEFAULT, AstraZeneca, 3, Toxoide);
+
+INSERT INTO Vacina (ID, Nome, Fase, Principio)
+	VALUES (DEFAULT, Pfizer, 3, Imunoglobulina);
+
+INSERT INTO Vacina (ID, Nome, Fase, Principio)
+	VALUES(DEFAULT, Moderna, 3, Atenuada);
+
+
+-- Instituicao
+
+INSERT INTO Instituicao (ID, Tipo, Pais, Nome, Local, GovOuBenef)
+	VALUES (DEFAULT, 'Publica', 1, 'UNIFEI', 'Itajuba', 'Federal');
+
+INSERT INTO Instituicao (ID, Tipo, Pais, Nome, Local, GovOuBenef)
+	VALUES (DEFAULT, 'Privada', 4, 'Samsung', 'Beijing', 'Samsung Inc.');
+
+INSERT INTO Instituicao (ID, Tipo, Pais, Nome, Local, GovOuBenef)
+	VALUES (DEFAULT, 'Publica', 3, 'Oxford', 'Oxford', 'Federal');
+
+INSERT INTO Instituicao (ID, Tipo, Pais, Nome, Local, GovOuBenef)
+	VALUES (DEFAULT, 'Publica', 1, 'Barraca Amarela', 'Piranguinho', 'Municipal');
+
+INSERT INTO Instituicao (ID, Tipo, Pais, Nome, Local, GovOuBenef)
+	VALUES (DEFAULT, 'Privada', 5, 'Juji TV', 'Minato Tokyo', 'Fuji Media Holdings, Inc.');
+
+
+-- RelInstVac
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 1, 1);
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 1, 2);
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 2, 2);
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 3, 3);
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 4, 4);
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 5, 4);
+
+INSERT INTO RelInstVac (ID, Vacina, Instituicao)
+	VALUES (DEFAULT, 5, 5);
+
+
+
+-- pg_dump -U joseluizjunior -W -F p projeto_bd1 > ~/Documents/Backup_1
 
 
 
