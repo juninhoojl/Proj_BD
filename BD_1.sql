@@ -47,7 +47,7 @@ ALTER SEQUENCE Acompanhamento_id_seq OWNED BY Acompanhamento.ID;
 
 CREATE SEQUENCE Pais_id_seq;
 
-CREATE TYPE continentes AS ENUM ('America-Norte', 'America-Sul', 'Asia', 'Europa', 'Africa', 'Oceania');
+CREATE TYPE continentes AS ENUM ('Americas', 'Asia', 'Europa', 'Africa', 'Oceania');
 
 CREATE TABLE Pais (
 	ID INT NOT NULL DEFAULT nextval('Pais_id_seq') PRIMARY KEY,
@@ -128,6 +128,29 @@ CREATE TABLE Feito(
 		ON DELETE CASCADE ON UPDATE CASCADE,
 	PRIMARY KEY(Testes, Pais)
 );
+
+
+-- Pais
+
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
+
+
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
+
+
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
+
+
+INSERT INTO Pais (ID, Nome, Sigla, Continente)
+	VALUES (DEFAULT, 'Brasil', 'BR', 'Americas');
+
+
+
+
+
 
 
 
