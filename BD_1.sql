@@ -11,9 +11,9 @@ COMMENT ON SCHEMA public IS 'standard public schema';
 
 CREATE SEQUENCE Vacina_id_seq;
 
-CREATE TABLE Vacina (
+CREATE TABLE Vacina(
 	ID INT NOT NULL DEFAULT nextval('Vacina_id_seq') PRIMARY KEY,
-	Nome VARCHAR(25) NOT NULL,
+	Nome VARCHAR(25) NOT NULL UNIQUE,
 	Fase VARCHAR(25) NOT NULL,
 	Principio VARCHAR(25) NOT NULL
 );
@@ -27,25 +27,11 @@ CREATE TABLE Distribuicao(
 	Quantidade INTEGER NOT NULL,
 	Grupo VARCHAR(25) NOT NULL,
 	Data TIMESTAMP NOT NULL,
-	Local VARCHAR(25) NOT NULL
-);
-
-ALTER SEQUENCE Distribuicao_id_seq OWNED BY Distribuicao.ID;
-
-CREATE SEQUENCE RelDistVac_id_seq;
-
-CREATE TABLE RelDistVac(
-	ID INT NOT NULL DEFAULT nextval('RelDistVac_id_seq') PRIMARY KEY,
+	Local VARCHAR(25) NOT NULL,
 	Vacina INT NOT NULL,
-	Distribuicao INT NOT NULL,
 	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Distribuicao) REFERENCES Distribuicao(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-ALTER SEQUENCE RelDistVac_id_seq OWNED BY RelDistVac.ID;
-
 
 CREATE SEQUENCE Acompanhamento_id_seq;
 
@@ -59,7 +45,6 @@ CREATE TABLE Acompanhamento(
 
 ALTER SEQUENCE Acompanhamento_id_seq OWNED BY Acompanhamento.ID;
 
-
 CREATE SEQUENCE Pais_id_seq;
 
 CREATE TYPE continentes AS ENUM ('America-Norte', 'America-Sul', 'Asia', 'Europa', 'Africa', 'Oceania');
@@ -67,47 +52,41 @@ CREATE TYPE continentes AS ENUM ('America-Norte', 'America-Sul', 'Asia', 'Europa
 CREATE TABLE Pais (
 	ID INT NOT NULL DEFAULT nextval('Pais_id_seq') PRIMARY KEY,
 	Nome VARCHAR(25) NOT NULL,
-	Sigla VARCHAR(2) NOT NULL,
+	Sigla VARCHAR(3) NOT NULL,
 	Continente continentes  NOT NULL
 );
 
 ALTER SEQUENCE Pais_id_seq OWNED BY Pais.ID;
 
+CREATE SEQUENCE PassaraPor_id_seq;
+
+CREATE TABLE PassaraPor(
+	ID INT NOT NULL DEFAULT nextval('PassaraPor_id_seq') PRIMARY KEY,
+	Vacina INT NOT NULL,
+	Acompanhamento INT NOT NULL,
+	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (Acompanhamento) REFERENCES Acompanhamento(ID)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY(ID, Vacina, Acompanhamento)
+);
+
+ALTER SEQUENCE PassaraPor_id_seq OWNED BY PassaraPor.ID;
+
 CREATE SEQUENCE Teste_id_seq;
 
 CREATE TABLE Teste(
 	ID INT NOT NULL DEFAULT nextval('Teste_id_seq') PRIMARY KEY,
-	Vacina INT NOT NULL,
-	Pais INT NOT NULL,
-	Acompanhamento INT NOT NULL,
 	Quantidade INTEGER NOT NULL,
 	DataInicio TIMESTAMP NOT NULL,
 	DataFim TIMESTAMP NOT NULL,
 	Local VARCHAR(25) NOT NULL,
-	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Pais) REFERENCES Pais(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Acompanhamento) REFERENCES Acompanhamento(ID)
+	PassaraPor INT,
+	FOREIGN KEY (PassaraPor) REFERENCES PassaraPor(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 ALTER SEQUENCE Teste_id_seq OWNED BY Teste.ID;
-
-
-CREATE SEQUENCE RelTestVac_id_seq;
-
-CREATE TABLE RelTestVac(
-	ID INT NOT NULL DEFAULT nextval('RelTestVac_id_seq') PRIMARY KEY,
-	Vacina INT NOT NULL,
-	Teste INT NOT NULL,
-	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Teste) REFERENCES Teste(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE
-);
-ALTER SEQUENCE RelTestVac_id_seq OWNED BY RelTestVac.ID;
-
 
 CREATE SEQUENCE Instituicao_id_seq;
 
@@ -137,6 +116,19 @@ CREATE TABLE RelInstVac(
 	FOREIGN KEY (Instituicao) REFERENCES Instituicao(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 ALTER SEQUENCE RelInstVac_id_seq OWNED BY RelInstVac.ID;
+
+CREATE TABLE Feito(
+	Teste INT NOT NULL,
+	Pais INT NOT NULL,
+	FOREIGN KEY (Teste) REFERENCES Teste(ID)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY (Pais) REFERENCES Pais(ID)
+		ON DELETE CASCADE ON UPDATE CASCADE,
+	PRIMARY KEY(Testes, Pais)
+);
+
+
 
 
