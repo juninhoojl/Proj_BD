@@ -1,0 +1,13 @@
+Grupo:
+
+	Ádrian de Oliveira Castello Pereira
+	Douglas Raimundo de Oliveira Silva
+	José Luiz Corrêa Junior
+	Matheus Campos Sousa
+
+Data de entrega:
+	26 de Outubro de 2020
+
+Sobre:
+	BD_1.sql -> SQL para gerar tabelas e inserir dados (Cuidado deleta o scheme).
+	Backup_1 -> Backup tipo P do .sql (pg_dump -U joseluizjunior -W -F p projeto_bd1 > ~/Documents/Backup_1)
