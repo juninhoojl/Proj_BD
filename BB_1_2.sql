@@ -290,3 +290,89 @@ INSERT INTO RelVacTestAcom (Vacina, Teste, Acompanhamento)
 	VALUES (4, 4, 3);
 
 -- pg_dump -U joseluizjunior -W -F p projeto_bd1 > ~/Documents/Backup_2
+
+
+-- Consultas
+
+SELECT * FROM pais;
+
+SELECT * FROM pais WHERE sigla = 'BR';
+
+SELECT id, nome FROM pais WHERE sigla = 'BR';
+
+SELECT continente FROM pais WHERE sigla = 'BR';
+
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
+
+FROM Orders AS
+
+INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+
+SELECT pais FROM instituicao WHERE nome = 'UNIFEI';
+
+-- Seleciona os nomes das instituicoes e o nome do pais que pertence
+SELECT inst.nome, pais.nome
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+	ON inst.pais = pais.id;
+
+-- Seleciona os nomes das instituicoes e o nome do pais que pertencem ao continente america
+SELECT inst.nome, pais.nome, pais.continente
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+	ON inst.pais = pais.id
+WHERE pais.continente = 'America';
+
+-- Conta quantidade de instituicoes que estao em paises do continente america
+
+SELECT COUNT(pais.id)
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+	ON inst.pais = pais.id
+WHERE pais.continente = 'America';
+
+
+-- Selecionar o nome das vacinas de cada instituicao e agrupar por continente
+
+SELECT inst.nome, pais.nome, pais.continente, vac.nome
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
+WHERE pais.continente = 'America';
+
+-- Selecionar o nome das vacinas de cada instituicao e agrupar por continente
+
+SELECT inst.nome, COUNT(vac.id)
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id;
+	GROUP BY pais.nome
+
+
+SELECT inst.nome, pais.nome, pais.continente, vac.nome, vac.fase, vac.principio
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
+	ORDER BY pais.continente ASC, pais.nome;
+
+
+
+
+
+
+
+
+
+
