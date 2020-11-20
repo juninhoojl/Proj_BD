@@ -329,7 +329,7 @@ FROM instituicao AS inst
 SELECT inst.nome AS "Instituicao",
 	inst.local AS "Local"
 	FROM instituicao as inst
-WHERE inst.beneficiario LIKE '%de%';
+WHERE inst.beneficiario LIKE '%de%'
 ORDER BY inst.nome ASC;
 
 
