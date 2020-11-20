@@ -149,13 +149,13 @@ INSERT INTO Vacina (ID, Nome, Fase, Principio)
 	VALUES (DEFAULT, 'Sinovac', '3', 'Inativada');
 
 INSERT INTO Vacina (ID, Nome, Fase, Principio)
-	VALUES (DEFAULT, 'Coronavac', '3', 'Inativada');
+	VALUES (DEFAULT, 'Coronavac', '1', 'Inativada');
 
 INSERT INTO Vacina (ID, Nome, Fase, Principio)
-	VALUES (DEFAULT, 'AstraZeneca', '3', 'Toxoide');
+	VALUES (DEFAULT, 'AstraZeneca', '2', 'Toxoide');
 
 INSERT INTO Vacina (ID, Nome, Fase, Principio)
-	VALUES (DEFAULT, 'Pfizer', '3', 'Imunoglobulina');
+	VALUES (DEFAULT, 'Pfizer', '1', 'Imunoglobulina');
 
 INSERT INTO Vacina (ID, Nome, Fase, Principio)
 	VALUES(DEFAULT, 'Moderna', '3', 'Atenuada');
@@ -292,49 +292,11 @@ INSERT INTO RelVacTestAcom (Vacina, Teste, Acompanhamento)
 -- pg_dump -U joseluizjunior -W -F p projeto_bd1 > ~/Documents/Backup_2
 
 
--- Consultas
+-- Consultas usando mais de duas tabelas no inner join
 
-SELECT * FROM pais;
+-- Lista todas as vacinas mostrando a instrituicao, pais, vacina, fase e principio ativo ordenando pelo nome da vacina (ja que pode ter mais de uma instituicao nela)
 
-SELECT * FROM pais WHERE sigla = 'BR';
-
-SELECT id, nome FROM pais WHERE sigla = 'BR';
-
-SELECT continente FROM pais WHERE sigla = 'BR';
-
-SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate
-
-FROM Orders AS
-
-INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
-
-SELECT pais FROM instituicao WHERE nome = 'UNIFEI';
-
--- Seleciona os nomes das instituicoes e o nome do pais que pertence
-SELECT inst.nome, pais.nome
-FROM instituicao AS inst
-	INNER JOIN pais AS pais
-	ON inst.pais = pais.id;
-
--- Seleciona os nomes das instituicoes e o nome do pais que pertencem ao continente america
-SELECT inst.nome, pais.nome, pais.continente
-FROM instituicao AS inst
-	INNER JOIN pais AS pais
-	ON inst.pais = pais.id
-WHERE pais.continente = 'America';
-
--- Conta quantidade de instituicoes que estao em paises do continente america
-
-SELECT COUNT(pais.id)
-FROM instituicao AS inst
-	INNER JOIN pais AS pais
-	ON inst.pais = pais.id
-WHERE pais.continente = 'America';
-
-
--- Selecionar o nome das vacinas de cada instituicao e agrupar por continente
-
-SELECT inst.nome, pais.nome, pais.continente, vac.nome
+SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
 FROM instituicao AS inst
 	INNER JOIN pais AS pais
 		ON inst.pais = pais.id
@@ -342,30 +304,128 @@ FROM instituicao AS inst
 		ON rel.instituicao = inst.id
 	INNER JOIN vacina AS vac
 		ON rel.vacina = vac.id
-WHERE pais.continente = 'America';
+	ORDER BY vac.nome ASC;
 
--- Selecionar o nome das vacinas de cada instituicao e agrupar por continente
-
-SELECT inst.nome, COUNT(vac.id)
+-- Conta a quantidade de vacinas numa fase x em cada continente e ordena e agrupa por continente
+SELECT pais.continente AS "Continente",
+	COUNT(CASE WHEN vac.fase = '1' then 1 ELSE NULL END) as "Qtd Fase 1",
+	COUNT(CASE WHEN vac.fase = '2' then 1 ELSE NULL END) as "Qtd Fase 2",
+	COUNT(CASE WHEN vac.fase = '3' then 1 ELSE NULL END) as "Qtd Fase 3",
+	COUNT(vac.fase) as "Qtd Total"
 FROM instituicao AS inst
 	INNER JOIN pais AS pais
 		ON inst.pais = pais.id
 	INNER JOIN RelInstVac AS rel
 		ON rel.instituicao = inst.id
 	INNER JOIN vacina AS vac
-		ON rel.vacina = vac.id;
+		ON rel.vacina = vac.id
+	GROUP BY pais.continente
+	ORDER BY pais.continente ASC;
+
+
+-- Consultas usando like
+-- Lista o nome das instituicoes e local dela caso tenha a string de no meio do nome do governo e ordena pelo nome
+
+SELECT inst.nome AS "Instituicao",
+	inst.local AS "Local"
+	FROM instituicao as inst
+WHERE inst.beneficiario LIKE '%de%';
+ORDER BY inst.nome ASC;
+
+
+-- Lista os lugares dos testes onde o nome do lugar tem pelo menos 11 caracteres e ordena pela quantidade
+
+SELECT vac.nome AS "Vacina",
+	teste.quantidade AS "Quantidade",
+	teste.local AS "Local"
+	FROM teste
+	INNER JOIN vacina AS vac
+		ON teste.vacina = vac.id
+WHERE teste.local LIKE '___________%'
+ORDER BY teste.quantidade ASC;
+
+
+-- Funcao de agregacao usando having
+-- Maior quantidade de distribuicao em cada se a menor da cidade for maior que 900
+SELECT dist.local AS "Local",
+	max(dist.quantidade) AS "Maior quantidade"
+	FROM distribuicao AS dist
+	GROUP BY dist.local
+	HAVING min(dist.quantidade) > 900;
+
+-- Mostra a soma de todas as distribuicoes de cada cidade se a soma for maior que 1900 
+-- e ordenando da maior quantidade para a maior
+SELECT dist.local AS "Local",
+	SUM(dist.quantidade) AS "Total"
+	FROM distribuicao AS dist
+	GROUP BY dist.local
+	HAVING SUM(dist.quantidade) > 1900
+	ORDER BY SUM(dist.quantidade) DESC;
+
+
+-- Junção externa
+
+
+-- Mostra as informacoes do teste e faz a juncao a direita com a tabela vacina, logo teremos as vacinas sem teste ao final
+-- por conta da ordenacao ascendente da data, já que nao existe teste sem vacina, porem existe vacina sem teste
+-- entao nao faz nem sentido fazer uma juncao externa full, o resultado seria o mesmo
+SELECT
+	teste.datainicio AS "Data de Inicio",
+	teste.datafim AS "Data de Fim",
+	teste.local AS "Local",
+	teste.quantidade AS "Quantidade",
+	vac.nome AS "Vacina"
+FROM teste
+RIGHT OUTER JOIN vacina as vac ON (vac.id=teste.vacina)
+ORDER BY teste.datafim ASC;
+
+
+-- Ao fazer o left outer join teremos o mesmo resultado que um join normal já que nao existe teste sem vacina
+SELECT
+	teste.datainicio AS "Data de Inicio",
+	teste.datafim AS "Data de Fim",
+	teste.local AS "Local",
+	teste.quantidade AS "Quantidade",
+	vac.nome AS "Vacina"
+FROM teste
+LEFT OUTER JOIN vacina as vac ON (vac.id=teste.vacina)
+ORDER BY teste.datafim ASC;
+
+
+-- Divisao
+
+-- Retorna a porcentagem das vacinas em cada
+SELECT	CAST(COUNT(CASE WHEN vac.fase = '1' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
+	CAST(COUNT(CASE WHEN vac.fase = '2' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
+	CAST(COUNT(CASE WHEN vac.fase = '3' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
+	COUNT(vac.fase) AS "TOTAL"
+FROM vacina AS vac
+
+-- Retorna a porcentagem das vacinas em cada fase para cada pais
+SELECT pais.nome AS "Pais",
+	COUNT(CASE WHEN vac.fase = '1' then 1 ELSE NULL END) AS "Qtd Fase 1",
+	CAST(COUNT(CASE WHEN vac.fase = '1' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "% Fase 1",
+	COUNT(CASE WHEN vac.fase = '2' then 1 ELSE NULL END) AS "Qtd Fase 2",
+	CAST(COUNT(CASE WHEN vac.fase = '2' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "% Fase 2",
+	COUNT(CASE WHEN vac.fase = '3' then 1 ELSE NULL END) AS "Qtd Fase 3",
+	CAST(COUNT(CASE WHEN vac.fase = '3' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "% Fase 3",
+	COUNT(vac.fase) AS "TOTAL"
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
 	GROUP BY pais.nome
+	ORDER BY pais.nome ASC;
 
 
-SELECT inst.nome, pais.nome, pais.continente, vac.nome, vac.fase, vac.principio
-FROM instituicao AS inst
-	INNER JOIN pais AS pais
-		ON inst.pais = pais.id
-	INNER JOIN RelInstVac AS rel
-		ON rel.instituicao = inst.id
-	INNER JOIN vacina AS vac
-		ON rel.vacina = vac.id
-	ORDER BY pais.continente ASC, pais.nome;
+
+
+
+
+
 
 
 
