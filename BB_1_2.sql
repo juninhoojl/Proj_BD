@@ -329,7 +329,7 @@ FROM instituicao AS inst
 SELECT inst.nome AS "Instituicao",
 	inst.local AS "Local"
 	FROM instituicao as inst
-WHERE inst.beneficiario LIKE '%de%'
+WHERE inst.governo LIKE '%de%'
 ORDER BY inst.nome ASC;
 
 
@@ -394,7 +394,7 @@ ORDER BY teste.datafim ASC;
 
 -- Divisao
 
--- Retorna a porcentagem das vacinas em cada
+-- Retorna a porcentagem das vacinas em cada fase na totalidade
 SELECT	CAST(COUNT(CASE WHEN vac.fase = '1' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
 	CAST(COUNT(CASE WHEN vac.fase = '2' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
 	CAST(COUNT(CASE WHEN vac.fase = '3' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
