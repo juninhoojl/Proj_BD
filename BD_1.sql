@@ -392,7 +392,7 @@ LEFT OUTER JOIN vacina as vac ON (vac.id=teste.vacina)
 ORDER BY teste.datafim ASC;
 
 
--- Divisao
+-- Extra
 
 -- Retorna a porcentagem das vacinas em cada fase na totalidade
 SELECT	CAST(COUNT(CASE WHEN vac.fase = '1' then 1 ELSE NULL END) AS FLOAT) / COUNT(vac.fase) AS "Porcentagem na Fase 1",
@@ -421,16 +421,96 @@ FROM instituicao AS inst
 	ORDER BY pais.nome ASC;
 
 
+-- Divisao
+
+
+SELECT COD, NOME  FROM CONTABILIDADE
+	EXCEPT
+SELECT COD, NOME FROM FUNCIONARIO.CONTABILIDADE
 
 
 
+SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
+	ORDER BY vac.nome ASC;
 
 
 
+select c.id from cliente c where not exists
+((select e.id from estabelecimento e)
+EXCEPT
+(select f.id_estabelecimento from fidelizacao f where c.id = f.id_cliente))
 
 
+SELECT ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	LEFT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID
+EXCEPT
+	SELECT  ID, NAME, AMOUNT, DATE
+	FROM CUSTOMERS
+	RIGHT JOIN ORDERS
+	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
 
 
+SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
+FROM instituicao AS inst
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
+	ORDER BY vac.nome ASC
+EXCEPT
+SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
+FROM instituicao AS inst where vac.fase = 1
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
+	ORDER BY vac.nome ASC;
+
+SELECT vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
+FROM vacina AS vac
+	ORDER BY vac.nome ASC;
+EXCEPT
+SELECT vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
+FROM vacina AS vac
+	ORDER BY vac.nome ASC;
+
+SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
+FROM instituicao AS inst where vac.fase = 1
+	INNER JOIN pais AS pais
+		ON inst.pais = pais.id
+	INNER JOIN RelInstVac AS rel
+		ON rel.instituicao = inst.id
+	INNER JOIN vacina AS vac
+		ON rel.vacina = vac.id
+	ORDER BY vac.nome ASC;
+
+
+seleciona local da instituicao que nao aparece na
+
+
+SELECT COD, NOME FROM CONTABILIDADE
+	EXCEPT
+SELECT COD, NOME FROM FUNCIONARIO.CONTABILIDADE
+
+
+SELECT nome, fase, principio
+	FROM vacina
+EXCEPT
+SELECT nome, fase, principio
+	FROM vacina
 
 
 
