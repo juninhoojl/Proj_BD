@@ -423,94 +423,17 @@ FROM instituicao AS inst
 
 -- Divisao
 
+--  Seleciona todas as vacinas que estao na fase 1 que nao estao em teste nenhum
 
-SELECT COD, NOME  FROM CONTABILIDADE
-	EXCEPT
-SELECT COD, NOME FROM FUNCIONARIO.CONTABILIDADE
-
-
-
-SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
-FROM instituicao AS inst
-	INNER JOIN pais AS pais
-		ON inst.pais = pais.id
-	INNER JOIN RelInstVac AS rel
-		ON rel.instituicao = inst.id
+SELECT nome AS "Nome", fase AS "Fase", principio AS "Principio"
+	FROM vacina WHERE fase = '1'
+EXCEPT
+SELECT vac.nome, vac.fase, vac.principio
+	FROM teste
 	INNER JOIN vacina AS vac
-		ON rel.vacina = vac.id
-	ORDER BY vac.nome ASC;
+		ON teste.vacina = vac.id;
 
 
-
-select c.id from cliente c where not exists
-((select e.id from estabelecimento e)
-EXCEPT
-(select f.id_estabelecimento from fidelizacao f where c.id = f.id_cliente))
-
-
-SELECT ID, NAME, AMOUNT, DATE
-	FROM CUSTOMERS
-	LEFT JOIN ORDERS
-	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID
-EXCEPT
-	SELECT  ID, NAME, AMOUNT, DATE
-	FROM CUSTOMERS
-	RIGHT JOIN ORDERS
-	ON CUSTOMERS.ID = ORDERS.CUSTOMER_ID;
-
-
-SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
-FROM instituicao AS inst
-	INNER JOIN pais AS pais
-		ON inst.pais = pais.id
-	INNER JOIN RelInstVac AS rel
-		ON rel.instituicao = inst.id
-	INNER JOIN vacina AS vac
-		ON rel.vacina = vac.id
-	ORDER BY vac.nome ASC
-EXCEPT
-SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
-FROM instituicao AS inst where vac.fase = 1
-	INNER JOIN pais AS pais
-		ON inst.pais = pais.id
-	INNER JOIN RelInstVac AS rel
-		ON rel.instituicao = inst.id
-	INNER JOIN vacina AS vac
-		ON rel.vacina = vac.id
-	ORDER BY vac.nome ASC;
-
-SELECT vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
-FROM vacina AS vac
-	ORDER BY vac.nome ASC;
-EXCEPT
-SELECT vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
-FROM vacina AS vac
-	ORDER BY vac.nome ASC;
-
-SELECT inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
-FROM instituicao AS inst where vac.fase = 1
-	INNER JOIN pais AS pais
-		ON inst.pais = pais.id
-	INNER JOIN RelInstVac AS rel
-		ON rel.instituicao = inst.id
-	INNER JOIN vacina AS vac
-		ON rel.vacina = vac.id
-	ORDER BY vac.nome ASC;
-
-
-seleciona local da instituicao que nao aparece na
-
-
-SELECT COD, NOME FROM CONTABILIDADE
-	EXCEPT
-SELECT COD, NOME FROM FUNCIONARIO.CONTABILIDADE
-
-
-SELECT nome, fase, principio
-	FROM vacina
-EXCEPT
-SELECT nome, fase, principio
-	FROM vacina
 
 
 
