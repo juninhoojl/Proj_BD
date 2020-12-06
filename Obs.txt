@@ -6,7 +6,7 @@ Grupo:
 	Matheus Campos Sousa
 
 Data de entrega:
-	26 de Outubro de 2020
+	7 de Dezembro de 2020
 
 Sobre:
 	BD_1.sql -> SQL para gerar tabelas e inserir dados (Cuidado deleta o scheme).
