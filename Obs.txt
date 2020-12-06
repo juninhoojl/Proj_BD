@@ -6,8 +6,14 @@ Grupo:
 	Matheus Campos Sousa
 
 Data de entrega:
-	7 de Dezembro de 2020
 
-Sobre:
-	BD_1.sql -> SQL para gerar tabelas e inserir dados (Cuidado deleta o scheme).
-	Backup_1 -> Backup tipo P do .sql (pg_dump -U joseluizjunior -W -F p projeto_bd1 > ~/Documents/Backup_1)
+	Entrega Final = 7 de Dezembro de 2020
+
+Descrição de Cada arquivo:
+
+	Estrutura.sql = Tabelas
+	Consultas_Parte_1.sql = Consultas entrega anterior
+	Consultas_Parte_2.sql = Consultas dessa entrega
+	Gatilho.sql = Gatilho
+	Procedimento.sql = Procedimento armazenado
+	Obs.txt = Descricao breve de cada arquivo
