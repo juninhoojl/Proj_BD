@@ -1,8 +1,8 @@
--- DROP DATABASE IF EXISTS projeto_bd1;
--- CREATE DATABASE projeto_bd1; 
--- USE projeto_bd1;
--- DROP SCHEMA public CASCADE;
--- CREATE SCHEMA public;
+DROP DATABASE IF EXISTS projeto_bd1;
+CREATE DATABASE projeto_bd1; 
+USE projeto_bd1;
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
 
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO public;
