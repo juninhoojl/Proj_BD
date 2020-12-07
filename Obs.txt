@@ -14,6 +14,6 @@ Descrição de Cada arquivo:
 	Estrutura.sql = Tabelas
 	Consultas_Parte_1.sql = Consultas entrega anterior
 	Consultas_Parte_2.sql = Consultas dessa entrega
-	Gatilho.sql = Gatilho
-	Procedimento.sql = Procedimento armazenado
+	Trigger.sql = Gatilho
+	Procedure.sql = Procedimento armazenado
 	Obs.txt = Descricao breve de cada arquivo
