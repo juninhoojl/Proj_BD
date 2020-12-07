@@ -34,12 +34,17 @@ INSERT INTO RelInstVac (Vacina, Instituicao) VALUES
 	(5, 5);
 
 -- Distribuicao
-INSERT INTO Distribuicao (ID, Quantidade, Grupo, Data, Local, Vacina) VALUES 
+INSERT INTO Distribuicao (ID, Quantidade, Grupo, Data, Local, Vacina) VALUES
+	(DEFAULT, 1000, 'Criancas', current_timestamp, 1, 1),
+	(DEFAULT, 1500, 'Idosos', current_timestamp, 1, 2),
+	(DEFAULT, 2000, 'Adultos', current_timestamp, 1, 3),
+	(DEFAULT, 900, 'Profissionais de Saude', current_timestamp, 1, 4),
+	(DEFAULT, 1300, 'Idosos', current_timestamp, 1, 5),
 	(DEFAULT, 1000, 'Criancas', current_timestamp, 1, 1),
 	(DEFAULT, 1500, 'Idosos', current_timestamp, 3, 1),
 	(DEFAULT, 2000, 'Adultos', current_timestamp, 4, 3),
 	(DEFAULT, 900, 'Profissionais de Saude', current_timestamp, 1, 3),
-	(DEFAULT, 1300, 'Grupo de Risco', current_timestamp, 5, 3);
+	(DEFAULT, 1300, 'Profissionais de Saude', current_timestamp, 5, 3);	
 
 -- Teste
 INSERT INTO Teste (ID, Vacina, Quantidade, DataInicio, DataFim, Local) VALUES 
