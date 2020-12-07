@@ -134,15 +134,15 @@ ORDER BY teste.quantidade ASC;
 
 # x) Divisão
 
+
 -- Retorna o nome dos países que possui, ao menos, 
 -- uma distribuição de cada uma de todas as vacinas cadastradas no momento.
 
 SELECT p.nome 
-FROM pais p
-WHERE (SELECT COUNT(DISTINCT d.vacina) 
-FROM distribuicao d WHERE d.local = p.id) = (SELECT COUNT(*) FROM vacina)
-
-
+	FROM pais p
+		WHERE (SELECT COUNT(DISTINCT d.vacina) 
+	FROM distribuicao d 
+		WHERE d.local = p.id) = (SELECT COUNT(*) FROM vacina)
 
 
 
