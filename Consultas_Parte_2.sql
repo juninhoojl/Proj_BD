@@ -134,6 +134,11 @@ ORDER BY teste.quantidade ASC;
 
 # x) Divisão
 
+SELECT p.nome 
+	FROM pais p
+		WHERE (SELECT COUNT(DISTINCT d.vacina) 
+	FROM distribuicao d 
+		WHERE d.local = p.id) = (SELECT COUNT(*) FROM vacina)
 
 
 
