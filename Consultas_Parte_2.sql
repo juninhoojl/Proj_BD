@@ -81,7 +81,7 @@ FROM instituicao AS inst
 SELECT local FROM teste
 	UNION
 SELECT local FROM distribuicao
-WHERE local like '__%'
+WHERE local LIKE '__%'
 ORDER BY local DESC;
 
 
