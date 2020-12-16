@@ -1,4 +1,4 @@
--- View atualizável e atualizada
+-- View atualizável(a partir da view podemos atualizar o banco de dados) e atualizada(reflete os dados do banco atual)
 
 CREATE VIEW vinstituicoes AS
 	SELECT *
@@ -8,16 +8,17 @@ CREATE VIEW vinstituicoes AS
 -- Vizualizamos a view
 SELECT * FROM vinstituicoes;
 
-
 -- Inserimos um valor pela view para verificar se é atualizável
 INSERT INTO vinstituicoes VALUES (DEFAULT, 1, 'Abcde', 'Campinas', 'Federal', '');
 
 -- Garantimos que foi atulizada
 SELECT * FROM instituicao;
 
--- View materializada (Cria uma tabela real)
+-- View materializada (cria uma nova tabela a partir da consulta e armazena esta nova tabela na memória)
+-- NEM ATUALIÁVEL NEM ATUALIZADA
 
-CREATE MATERIALIZED VIEW vvacinafase3brasil AS SELECT 
+CREATE MATERIALIZED VIEW vvacinafase3brasil 
+AS SELECT 
 inst.nome AS "Instituicao", pais.nome AS "Pais", vac.nome AS "Vacina", vac.fase AS "Fase", vac.principio AS "Principio"
 FROM instituicao AS inst 
 	INNER JOIN pais AS pais
@@ -28,5 +29,5 @@ FROM instituicao AS inst
 		ON rel.vacina = vac.id
 	WHERE vac.fase = '3' AND pais.nome = 'Brasil';
 
-select * from vvacinafase3brasil;
+SELECT * FROM vvacinafase3brasil;
 
