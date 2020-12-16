@@ -35,12 +35,13 @@ ALTER SEQUENCE Pais_id_seq OWNED BY Pais.ID;
 CREATE TYPE grupos AS ENUM ('Todos', 'Criancas', 'Adultos', 'Idosos', 'Profissionais de Saude', 'Grupo de Risco', 'Outro');
 CREATE SEQUENCE Distribuicao_id_seq;
 CREATE TABLE Distribuicao(
-	ID INT NOT NULL DEFAULT nextval('Distribuicao_id_seq') PRIMARY KEY,
+	ID INT NOT NULL DEFAULT nextval('Distribuicao_id_seq'),
 	Quantidade INTEGER NOT NULL,
 	Grupo grupos NOT NULL,
 	Data TIMESTAMP NOT NULL,
 	Local INT NOT NULL,
 	Vacina INT NOT NULL,
+	PRIMARY KEY(ID, Vacina),
 	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE,
 	FOREIGN KEY (Local) REFERENCES Pais(ID)
@@ -52,24 +53,14 @@ CREATE SEQUENCE Teste_id_seq;
 CREATE TABLE Teste(
 	ID INT NOT NULL DEFAULT nextval('Teste_id_seq') PRIMARY KEY,
 	Vacina INT NOT NULL,
-	Quantidade INTEGER NOT NULL,
-	DataInicio TIMESTAMP NOT NULL,
+	Quantidade INT NOT NULL,
+	DataInicio TIMESTAMP NOT NULL, 
 	DataFim TIMESTAMP NOT NULL,
-	Local VARCHAR(25) NOT NULL,
+	Local VARCHAR(25) NOT NULL, 
 	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE
 );
 ALTER SEQUENCE Teste_id_seq OWNED BY Teste.ID;
-
-CREATE TABLE RelTestPai(
-	Teste INT NOT NULL,
-	Pais INT NOT NULL,
-	PRIMARY KEY(Teste, Pais),
-	FOREIGN KEY (Teste) REFERENCES Teste(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Pais) REFERENCES Pais(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE
-);
 
 CREATE TYPE tipostatus AS ENUM ('Ocorrendo', 'Finalizado', 'Abortado', 'Iniciado');
 CREATE SEQUENCE Acompanhamento_id_seq;
@@ -109,16 +100,13 @@ CREATE TABLE RelInstVac(
 		ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE RelVacTestAcom(
-	Vacina INT NOT NULL,
+CREATE TABLE RelTestPai(
 	Teste INT NOT NULL,
-	Acompanhamento INT NOT NULL,
-	PRIMARY KEY(Vacina, Teste, Acompanhamento),
-	FOREIGN KEY (Vacina) REFERENCES Vacina(ID)
-		ON DELETE CASCADE ON UPDATE CASCADE,
+	Pais INT NOT NULL,
+	PRIMARY KEY(Teste, Pais),
 	FOREIGN KEY (Teste) REFERENCES Teste(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE,
-	FOREIGN KEY (Acompanhamento) REFERENCES Acompanhamento(ID)
+	FOREIGN KEY (Pais) REFERENCES Pais(ID)
 		ON DELETE CASCADE ON UPDATE CASCADE
 );
 
